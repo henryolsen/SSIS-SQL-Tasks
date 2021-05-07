@@ -86,9 +86,9 @@ WHERE PackageName = ? AND EndDateTime IS NULL
 --===SQL TASK 5:  OnTaskFailed Event Handler sending an automated email to multiple email addresses.  
 
 --Cursor used to send email to multiple people.  The emails in the EMAIL_LIST table are those who have access to the package
-DECLARE MDM_EMAIL_LIST_CURSOR CURSOR FOR
+DECLARE EMAIL_LIST_CURSOR CURSOR FOR
 	SELECT PACKAGE_NAME, EMAIL_ADDRESS FROM HenryDB.dbo.EMAIL_LIST 
-OPEN MDM_EMAIL_LIST_CURSOR
+OPEN EMAIL_LIST_CURSOR
 
 DECLARE @packageerror AS nvarchar(MAX)
 DECLARE @packagename AS nvarchar(50)
@@ -112,7 +112,7 @@ SET @packageerror= '<font size = 5><b>An error has occurred in the following pac
 
 --Cursor used to send email to multiple people.  
 
-FETCH NEXT FROM MDM_EMAIL_LIST_CURSOR INTO @PackageName, @EmailAddress
+FETCH NEXT FROM EMAIL_LIST_CURSOR INTO @PackageName, @EmailAddress
 
 WHILE @@FETCH_STATUS=0
 	IF @PackageName=?
@@ -132,8 +132,8 @@ WHILE @@FETCH_STATUS=0
 
 	
 
-CLOSE MDM_EMAIL_LIST_CURSOR
-DEALLOCATE MDM_EMAIL_LIST_CURSOR
+CLOSE EMAIL_LIST_CURSOR
+DEALLOCATE EMAIL_LIST_CURSOR
 
 
 
